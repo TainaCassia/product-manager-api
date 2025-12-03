@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorias - SportStyle</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-container">
+            <div class="logo">⚡SportStyle</div>
+            <nav>
+                <ul>
+                    <li><a href="/">Início</a></li>
+                    <li><a href="/produtos">Produtos</a></li>
+                    <li><a href="/categorias" style="color: var(--secondary);">Categorias</a></li>
+                    <li><a href="/cadastro">Cadastro</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Categorias de Produtos</h1>
+        <p>Aqui você gerencia as categorias e os produtos vinculados.</p>
+    </section>
+
+    <!-- SEÇÃO PRINCIPAL -->
+    <section class="products" style="margin-top: -30px;">
+
+        <h2 class="section-title">Categorias Cadastradas</h2>
+
+        <form id="formCategoria" 
+              style="background: white; padding: 20px; border-radius: 15px; margin-bottom: 40px; box-shadow: var(--shadow); display: flex; gap: 10px;">
+            
+            <input type="text" id="nomeCategoria" placeholder="Adicionar nova categoria..." style="flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #ccc;">
+            <button type="submit" style="padding: 12px 20px; border-radius: 10px; background: var(--primary); color: white; border: none;">Salvar</button>
+        </form>
+
+        <div id="listaCategorias" class="categories-grid"></div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+
+            <div class="footer-section">
+                <h3>SportStyle</h3>
+                <p>Os melhores produtos esportivos com qualidade e inovação.</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="/">Início</a></li>
+                    <li><a href="/produtos">Produtos</a></li>
+                    <li><a href="/categorias">Categorias</a></li>
+                    <li><a href="/cadastro">Cadastro</a></li>
+                
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <ul class="footer-links">
+                    <li>Av. Esportiva, 1234</li>
+                    <li>São Paulo, SP</li>
+                    <li>contato@sportstyle.com</li>
+                    <li>(11) 3456-7890</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            <p>&copy; 2025 SportStyle. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    
+    <!-- SCRIPT DA PÁGINA -->
+    <script>
+        const apiCategorias = "http://localhost:3000/categorias";
+        const apiProdutos = "http://localhost:3000/produtos";
+
+        const listaCategorias = document.getElementById("listaCategorias");
+        const form = document.getElementById("formCategoria");
+
+        let categoriaEditando = null;
+
+        // Carregar categorias + produtos associados
+        async function carregarCategorias() {
+            const resCat = await fetch(apiCategorias);
+            const categorias = await resCat.json();
+
+            const resProd = await fetch(apiProdutos);
+            const produtos = await resProd.json();
+
+            listaCategorias.innerHTML = "";
+
+            categorias.forEach(cat => {
+
+                // Filtrando produtos associados à categoria
+                const itensCategoria = produtos.filter(p => p.categoria_id === cat.id);
+
+                listaCategorias.innerHTML += `
+                    <div class="category-card" style="background: #252525; padding: 25px; border-radius: 10px;">
+                        <h3 class="category-title">${cat.nome}</h3>
+
+                        <p>${itensCategoria.length} produtos cadastrados</p>
+
+                        <button onclick="editarCategoria(${cat.id}, '${cat.nome}')"
+                                style="margin-top: 10px; padding: 8px 12px; border: none; 
+                                background: var(--secondary); color: white; border-radius: 6px;">
+                            Editar
+                        </button>
+
+                        <button onclick="excluirCategoria(${cat.id})"
+                                style="margin-top: 10px; padding: 8px 12px; border: none; 
+                                background: #d60000; color: white; border-radius: 6px;">
+                            Excluir
+                        </button>
+
+                        <a href="produtos.html?categoria=${cat.id}"
+                           style="display:block; margin-top: 15px; padding: 10px; background: var(--accent); 
+                           text-align:center; border-radius:10px; color:white; text-decoration:none;">
+                           Ver produtos
+                        </a>
+                    </div>
+                `;
+            });
+        }
+
+        carregarCategorias();
+
+        // ADICIONAR OU EDITAR CATEGORIA
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const nome = document.getElementById("nomeCategoria").value;
+
+            if (!nome) return alert("Digite um nome!");
+
+            if (categoriaEditando) {
+                await fetch(`${apiCategorias}/${categoriaEditando}`, {
+                    method: "PUT",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({ nome })
+                });
+                categoriaEditando = null;
+
+            } else {
+                await fetch(apiCategorias, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({ nome })
+                });
+            }
+
+            document.getElementById("nomeCategoria").value = "";
+            carregarCategorias();
+        });
+
+        function editarCategoria(id, nome) {
+            categoriaEditando = id;
+            document.getElementById("nomeCategoria").value = nome;
+        }
+
+        async function excluirCategoria(id) {
+            if (!confirm("Tem certeza que deseja excluir?")) return;
+
+            await fetch(`${apiCategorias}/${id}`, { method: "DELETE" });
+
+            carregarCategorias();
+        }
+    </script>
+
+</body>
+</html>

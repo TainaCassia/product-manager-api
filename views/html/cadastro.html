@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - SportStyle</title>
+    <link rel="stylesheet" href="cadastro.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">⚡SportStyle</div>
+            <nav>
+                <ul>
+                    <li><a href="/">Início</a></li>
+                    <li><a href="/produtos">Produtos</a></li>
+                    <li><a href="/categorias">Categorias</a></li>
+                    <li><a href="/cadastro">Cadastro</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- conteiner 1 Esq -->
+    <div class="main-container">
+        <div class="left-side">
+            <!-- proganda1 -->
+            <h1>Junte-se à Comunidade SportStyle</h1>
+            <p>Crie sua conta e desbloqueie benefícios exclusivos para atletas e entusiastas do esporte.</p>
+            <!-- ofertas2 -->
+            <ul class="benefits">
+                <li>Ofertas especiais para membros</li>
+                <li>Programa de pontos e recompensas</li>
+                <li>Conteúdo exclusivo e dicas de treino</li>
+                <li>Descontos em produtos selecionados</li>
+                <li>Acesso antecipado a lançamentos</li>
+            </ul>
+        </div>
+        <!-- conteiner 2 Dir -->
+        <div class="right-side"> 
+            <h2 class="form-title">Criar Conta</h2>
+            <p class="form-subtitle">Preencha seus dados para se cadastrar</p>
+            
+            <form id="register-form">
+                <!-- NOME2 -->
+                <div class="name-group">
+                    <div class="form-group">
+                        <label for="firstName">Nome</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <!-- NOME2 -->
+                    <div class="form-group">
+                        <label for="lastName">Sobrenome</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                </div>
+                <!-- grupo email -->
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <!-- grupo senha1 -->
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required minlength="6">
+                </div>
+                <!-- grupo senha2 -->
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar Senha</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                
+               
+                <!-- caixa de esportes -->
+                <div class="form-group">
+                    <label for="sportdeIN">Esporte de Interesse</label>
+
+                    <select id="sportInterest" name="sportdeIN">
+                        <option value="">Selecione um esporte</option>
+                        <option value="fitness">Musculação/Fitness</option>
+                        <option value="soccer">Futebol</option>
+                        <option value="basketball">Basquete</option>
+                        <option value="swimming">Natação</option>
+                        <option value="other">Outro</option>
+                    </select>
+                </div>
+                <!-- check box1 -->
+                <div class="checkbox-group">
+                    <input type="checkbox" id="newsletter" name="newsletter" checked>
+                    <label for="newsletter">Desejo receber ofertas especiais e novidades por e-mail</label>
+                </div>
+                <!-- confirm -->
+                <button type="submit" class="submit-button">Criar Conta</button>
+                
+                <div class="login-link">
+                    Já tem uma conta? <a href="#">Faça login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>SportStyle</h3>
+                <p>Os melhores produtos esportivos com qualidade e inovação.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Início</a></li>
+                    <li><a href="#">Produtos</a></li>
+                    <li><a href="#">Categorias</a></li>
+                    <li><a href="#">Sobre Nós</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <ul class="footer-links">
+                    <li>Av. Esportiva, 1234</li>
+                    <li>São Paulo, SP</li>
+                    <li>contato@sportstyle.com</li>
+                    <li>(11) 3456-7890</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 SportStyle. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem!');
+                return;
+            }
+            
+            //  Simulação de cadastro bem-sucedido
+            alert('Cadastro realizado com sucesso! Verifique seu e-mail para confirmar sua conta.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

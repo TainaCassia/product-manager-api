@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta viewport="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Produtos - SportStyle</title>
+    <link rel="stylesheet" href="/style.css">
+
+    <style>
+        /* === Estilo geral da página de produtos === */
+
+        .admin-container {
+            max-width: 1100px;
+            margin: 130px auto;
+            padding: 20px;
+        }
+
+        .admin-title {
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* ===== FORMULÁRIO ===== */
+        .form-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .form-card h3 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .form-card label {
+            margin-top: 10px;
+            display: block;
+            font-weight: bold;
+        }
+
+        .form-card input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 1px solid #cccccc;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            margin-top: 15px;
+            background: #2b7cff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #1a5fde;
+        }
+
+        /* === GRID DE PRODUTOS === */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 22px;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.09);
+            transition: 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+        }
+
+        .product-id {
+            font-size: 14px;
+            background: #ececec;
+            padding: 5px 10px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .product-info h3 {
+            margin: 6px 0;
+            font-size: 20px;
+        }
+
+        .product-info p {
+            margin: 4px 0;
+            color: #666;
+        }
+
+        .product-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .btn-edit {
+            background: #ffb300;
+            border: none;
+            padding: 10px 14px;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-right: 6px;
+            transition: 0.2s;
+        }
+
+        .btn-edit:hover { background: #ffa000; }
+
+        .btn-delete {
+            background: #e53935;
+            border: none;
+            padding: 10px 14px;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .btn-delete:hover { background: #c62828; }
+
+        /* ===== MODAL ===== */
+
+        #modal-edicao {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.55);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            width: 420px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+        }
+
+        .modal-content h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .btn-cancelar {
+            margin-top: 15px;
+            background: #888;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .btn-cancelar:hover {
+            background:#666;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="logo">⚡SportStyle</div>
+        <nav>
+            <ul>
+                <li><a href="/">Início</a></li>
+                <li><a href="/produtos">Produtos</a></li>
+                <li><a href="/categorias">Categorias</a></li>
+                <li><a href="/cadastro">Cadastro</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="admin-container">
+
+    <h2 class="admin-title">Gerenciamento de Produtos</h2>
+
+    <!-- FORMULÁRIO -->
+    <div class="form-card">
+        <h3>Cadastrar Produto</h3>
+
+        <form id="form-cadastro">
+
+            <label>Nome do Produto</label>
+            <input type="text" id="nome" required>
+
+            <label>Categoria</label>
+            <input type="text" id="categoria" required>
+
+            <label>Valor</label>
+            <input type="number" id="valor" step="0.01" required>
+
+            <label>Imagem (URL)</label>
+            <input type="text" id="imagem" required>
+
+            <button class="btn-primary" type="submit">Cadastrar Produto</button>
+        </form>
+    </div>
+
+    <h3 class="admin-title">Produtos Cadastrados</h3>
+
+    <div id="lista-produtos" class="products-grid"></div>
+</div>
+
+<!-- ===== MODAL ===== -->
+<div id="modal-edicao">
+    <div class="modal-content">
+        <h3>Editar Produto</h3>
+
+        <form id="form-edicao" onsubmit="salvarEdicao(event)">
+            <input type="hidden" id="edit-id">
+
+            <label>Nome</label>
+            <input type="text" id="edit-nome" required>
+
+            <label>Categoria</label>
+            <input type="text" id="edit-categoria" required>
+
+            <label>Valor</label>
+            <input type="number" id="edit-valor" step="0.01" required>
+
+            <label>Imagem (URL)</label>
+            <input type="text" id="edit-imagem" required>
+            
+
+            <button class="btn-primary" type="submit">Salvar</button>
+        </form>
+
+        <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+    </div>
+</div>
+
+<!-- JS -->
+<script src="/produto.js"></script>
+
+</body>
+</html>
